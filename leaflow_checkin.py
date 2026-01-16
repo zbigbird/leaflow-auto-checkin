@@ -373,7 +373,7 @@ class LeaflowAutoCheckin:
         self.driver.get("https://checkin.leaflow.net")
         
         # 等待签到页面加载（最多重试3次，每次等待20秒）
-        if not self.wait_for_checkin_page_loaded(max_retries=3, wait_time=20):
+        if not self.wait_for_checkin_page_loaded(max_retries=5, wait_time=30):
             raise Exception("签到页面加载失败，无法找到签到相关元素")
         
         # 查找并点击立即签到按钮
@@ -472,6 +472,7 @@ class LeaflowAutoCheckin:
         finally:
             if self.driver:
                 self.driver.quit()
+                time.sleep(5)  # 新增这行
 
 class MultiAccountManager:
     """多账号管理器 - 简化配置版本"""
@@ -603,7 +604,7 @@ class MultiAccountManager:
                 
                 # 在账号之间添加间隔，避免请求过于频繁
                 if i < len(self.accounts):
-                    wait_time = 5
+                    wait_time = 20
                     logger.info(f"等待{wait_time}秒后处理下一个账号...")
                     time.sleep(wait_time)
                     
@@ -640,3 +641,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
